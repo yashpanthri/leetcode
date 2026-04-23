@@ -1,18 +1,19 @@
-from collections import defaultdict
-
 class Solution:
-    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
-        # Using defaultdict(list) removes the need for 'if key in answer' checks
-        groups = defaultdict(list)
-        
-        for s in strs:
-            # Create a character count array for 'a' through 'z'
-            count = [0] * 26
-            for char in s:
-                count[ord(char) - ord('a')] += 1
-            
-            # Use the tuple version of the count as the dictionary key
-            groups[tuple(count)].append(s)
-            
-        # Returning all the values in the dictionary as a list of lists
-        return list(groups.values())
+    def ret_tup_word(self, word):
+        ret_tup = [0]*26
+        for i in range (len(word)):
+            ret_tup[ord(word[i]) - ord('a')] +=1
+        return tuple(ret_tup)
+
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        answer = {}
+        for i in range(len(strs)):
+            key = self.ret_tup_word(strs[i])
+            if not key in answer:
+                answer[key] = [strs[i]]
+            else:
+                answer[key].append(strs[i])
+        result = []
+        for key in answer:
+            result += [answer[key]]
+        return result
